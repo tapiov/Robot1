@@ -41,4 +41,8 @@ extern void move(bool direction, uint16_t speed);
 
 extern void turn(bool direction, uint16_t speed);
 
+extern void initscreen(uint32_t BackGroundColor, uint32_t ForeGroundColor);
+
+extern void LCDwrite(char str[]);
+
 #endif /* MOTOR_CONTROL_H_ */

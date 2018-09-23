@@ -11,7 +11,6 @@
 #include "stm32f7xx_hal.h"
 
 #include "stdbool.h"
-
 #include "motor_control.h"
 
 void Master_Write(uint8_t sadd, uint8_t byte) {
@@ -125,6 +124,16 @@ void motor_write(uint8_t motor, bool direction, uint16_t speed) {
 
 void move(bool direction, uint16_t speed) {
 
+	char opstr[50];
+
+	if (direction) {
+		snprintf(opstr, 50, "Forward    Speed = %u", speed);
+		LCDwrite(opstr);
+	} else {
+		snprintf(opstr, 50, "Backward   Speed = %u", speed);
+		LCDwrite(opstr);
+	}
+
 	motor_write(1, direction, speed);
 	motor_write(2, direction, speed);
 	motor_write(3, direction, speed);
@@ -134,16 +143,37 @@ void move(bool direction, uint16_t speed) {
 
 void turn(bool direction, uint16_t speed) {
 
+	char opstr[50];
+
 	if (direction) {
+		snprintf(opstr, 50, "Turn Right Speed = %u", speed);
+		LCDwrite(opstr);
+
+//		motor_write(1, true, speed);
+//		motor_write(2, false, speed);
+//		motor_write(4, true, speed);
+//		motor_write(3, false, speed);
+
 		motor_write(1, true, speed);
-		motor_write(2, false, speed);
+		motor_write(2, true, 5);
 		motor_write(4, true, speed);
-		motor_write(3, false, speed);
+		motor_write(3, true, 5);
+
 	} else {
-		motor_write(1, false, speed);
+
+		snprintf(opstr, 50, "Turn Left  Speed = %u", speed);
+		LCDwrite(opstr);
+
+//		motor_write(1, false, speed);
+//		motor_write(2, true, speed);
+//		motor_write(4, false, speed);
+//		motor_write(3, true, speed);
+
+		motor_write(1, false, 5);
 		motor_write(2, true, speed);
-		motor_write(4, false, speed);
+		motor_write(4, false, 5);
 		motor_write(3, true, speed);
+
 	}
 
 }

@@ -39,8 +39,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f7xx_hal.h"
+#include "stm32746g_discovery_lcd.h"
 
 #include "motor_control.h"
+#include "screen_functions.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -180,10 +182,12 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	/* Turn off LCD Backlight for now */
-	HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_Port, LCD_BL_CTRL_Pin, GPIO_PIN_RESET);
+	// HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_Port, LCD_BL_CTRL_Pin, GPIO_PIN_RESET);
 
 	setup_led();
 	led_on();
+
+	initscreen(BackGColor, ForeGColor);
 
 	// Mode 1 register
 	// Turn off sleep mode = 0b00000001
@@ -199,33 +203,79 @@ int main(void)
   while (1)
   {
 
+		HAL_Delay(3000);
+
 		led_on();
 
 		// All forward
-		move(1, 30);
+		move(1, 50);
+		HAL_Delay(2000);
 
-		// Keep on for 3 s
-		HAL_Delay(3000);
-
-		led_on();
-
+		// turn for 3 s (~ 90 deg)
 		turn(1, 30);
-		// turn for 3 s
 		HAL_Delay(3000);
 
-		// All backward
-		move(0, 30);
+		// All forward
+		move(1, 50);
+		HAL_Delay(2000);
 
-		// Keep on for 3 s
+		// turn for 3 s (~ 90 deg)
+		turn(1, 30);
 		HAL_Delay(3000);
+
+		// All forward
+		move(1, 50);
+		HAL_Delay(2000);
+
+		// turn for 3 s (~ 90 deg)
+		turn(1, 30);
+		HAL_Delay(3000);
+
+		// All forward
+		move(1, 50);
+		HAL_Delay(2000);
 
 		led_off();
 
-		// All stop
+		// Pause
 		move(1, 0);
-
-		// Keep on for 3 s
 		HAL_Delay(3000);
+
+		// All backward
+		move(0, 50);
+		HAL_Delay(2000);
+
+		// turn for 3 s (~ 90 deg)
+		turn(0, 30);
+		HAL_Delay(3000);
+
+		// All backward
+		move(0, 50);
+		HAL_Delay(2000);
+
+		// turn for 3 s (~ 90 deg)
+		turn(0, 30);
+		HAL_Delay(3000);
+
+		// All backward
+		move(0, 50);
+		HAL_Delay(2000);
+
+		// turn for 3 s (~ 90 deg)
+		turn(0, 30);
+		HAL_Delay(3000);
+
+
+		turn(1, 30);
+		HAL_Delay(6000);
+		move(1, 0);
+		HAL_Delay(3000);
+
+		// Pause, stop
+		move(1, 0);
+		HAL_Delay(10000);
+
+		led_on();
 
   /* USER CODE END WHILE */
 
@@ -235,8 +285,6 @@ int main(void)
   /* USER CODE END 3 */
 
 }
-
-// move(direction,speed)
 
 
 /**
